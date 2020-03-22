@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutorial_01/models/location.dart';
 import 'package:tutorial_01/screens/location_detail/text_section.dart';
 import 'image_banner.dart';
 
@@ -6,9 +7,13 @@ class LocationDetail extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+
+    final locations = Location.fetchAll();
+    final location = locations.first;
+
     return Scaffold(
          appBar: AppBar(
-            title: Text('Teste Scaffold')
+            title: Text(location.name)
          ),
          
          
@@ -18,13 +23,20 @@ class LocationDetail extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children : [
                   
-                  ImageBanner('assets/images/img.jpg'),
-                  TextSection("Titulo 1","descrição do titulo 1 bla bla bla"),
-                  TextSection("TItulo 2","descrição do titulo 2 bla bla bla"),
-                  TextSection("Titulo 3","descrição do titulo 2 bla bla bla")
-    
-            ])
+                  ImageBanner(location.imagePath),
+            ]..addAll(textSections(location))
+
+
+            )
     );
   }
+
+
+  List<Widget> textSections(Location location){
+
+    return location.facts.map( (fact) => TextSection(fact.title, fact.text )).toList();
+
+  }
+
 }
 
